@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="images/logo.png" type="image/png">
+    <title>遥遥星辰</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="main-text">遥遥星辰</div>
+    
+    <div class="stars"></div>
+    
+    <div class="action-buttons">
+        <button class="action-btn" id="messageBoardBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M21 15C21 15.5304 20.7893 16.0391 20.4142 16.4142C20.0391 16.7893 19.5304 17 19 17H7L3 21V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            留言板
+        </button>
+        <button class="action-btn" id="aiChatBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 17H11V15H13V17ZM13 13H11V7H13V13Z" fill="currentColor"/>
+            </svg>
+            AI对话
+        </button>
+    </div>
+    
+    <div class="footer">
+        <div class="footer-left">lzc 制作</div>
+        <div class="footer-right" onclick="window.open('https://github.com/aiLinMc/ailinmc.github.io', '_blank')">
+            版权所有 (c) aiLinMc 2025，保留所有权利<br>点击查看源代码
+        </div>
+    </div>
+    
+    <!-- 留言板模态窗口 -->
+    <div class="modal-overlay" id="messageModal">
+        <div class="modal-content">
+            <button class="close-btn" id="closeMessageModal">&times;</button>
+            <h2 class="form-title">留言板</h2>
+            <form id="messageForm" method="POST">
+                <div class="form-group">
+                    <label for="name">昵称</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">留言内容</label>
+                    <textarea id="message" name="message" required></textarea>
+                </div>
+                <!-- 隐藏的Honeypot字段防止垃圾邮件 -->
+                <input type="hidden" name="_gotcha" style="display:none !important">
+                <button type="submit" class="submit-btn">提交留言</button>
+                <div class="form-message" id="formMessage"></div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- AI对话模态窗口 -->
+    <div class="modal-overlay" id="aiModal">
+        <div class="modal-content">
+            <button class="close-btn" id="closeAiModal">&times;</button>
+            <h2 class="form-title">AI对话</h2>
+            <form id="aiForm">
+                <div class="form-group">
+                    <label for="question">输入您的问题</label>
+                    <textarea id="question" name="question" placeholder="请输入您想了解的内容..." required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">发送问题</button>
+            </form>
+            <div class="ai-response" id="aiResponse">
+                <p>您好！我是AI助手，请问有什么可以帮助您的？</p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/script.js"></script>
+</body>
+</html>
