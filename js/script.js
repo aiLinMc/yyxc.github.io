@@ -284,7 +284,7 @@ createStars();
 // 文字切换功能
 document.addEventListener('DOMContentLoaded', function() {
     const mainText = document.getElementById('mainText');
-    const texts = ['遥遥星辰', '沉鱼落雁', '良辰美景', '284999'];
+    const texts = ['遥遥星辰', '284999', '广告位招租'];
     let currentIndex = 0;
     
     mainText.addEventListener('click', function() {
