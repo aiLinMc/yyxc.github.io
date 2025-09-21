@@ -132,6 +132,77 @@ function showGlobalMessage(message, isSuccess) {
     }, 3000);
 }
 
+// 音乐播放器功能
+const musicPlayerBtn = document.getElementById('musicPlayerBtn');
+const backgroundMusic = document.getElementById('backgroundMusic');
+const musicIcon = document.getElementById('musicIcon');
+const musicText = document.getElementById('musicText');
+
+// 从本地存储加载音乐状态
+function loadMusicState() {
+    const savedState = localStorage.getItem('musicState');
+    const savedTime = localStorage.getItem('musicTime');
+    
+    if (savedState === 'playing') {
+        // 设置时间但不自动播放
+        if (savedTime) {
+            backgroundMusic.currentTime = parseFloat(savedTime);
+        }
+        updateMusicUI(true);
+    } else {
+        updateMusicUI(false);
+    }
+}
+
+// 保存音乐状态到本地存储
+function saveMusicState() {
+    if (backgroundMusic.paused) {
+        localStorage.setItem('musicState', 'paused');
+    } else {
+        localStorage.setItem('musicState', 'playing');
+        localStorage.setItem('musicTime', backgroundMusic.currentTime);
+    }
+}
+
+// 更新音乐UI状态
+function updateMusicUI(isPlaying) {
+    if (isPlaying) {
+        musicText.textContent = '暂停音乐';
+        musicPlayerBtn.classList.add('music-playing');
+    } else {
+        musicText.textContent = '播放音乐';
+        musicPlayerBtn.classList.remove('music-playing');
+    }
+}
+
+// 切换音乐播放状态
+function toggleMusic() {
+    if (backgroundMusic.paused) {
+        backgroundMusic.play()
+            .then(() => {
+                updateMusicUI(true);
+                saveMusicState();
+            })
+            .catch(error => {
+                console.error('播放音乐失败:', error);
+                showGlobalMessage('音乐播放失败，请检查音频文件路径', false);
+            });
+    } else {
+        backgroundMusic.pause();
+        updateMusicUI(false);
+        saveMusicState();
+    }
+}
+
+// 定期保存音乐播放进度
+function setupMusicProgressSaving() {
+    setInterval(() => {
+        if (!backgroundMusic.paused) {
+            localStorage.setItem('musicTime', backgroundMusic.currentTime);
+        }
+    }, 1000); // 每秒保存一次进度
+}
+
 // 模态窗口功能
 const messageBoardBtn = document.getElementById('messageBoardBtn');
 const aiChatBtn = document.getElementById('aiChatBtn');
@@ -297,5 +368,25 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => {
             mainText.style.transform = 'scale(1)';
         }, 200);
+    });
+    
+    // 初始化音乐播放器
+    loadMusicState();
+    setupMusicProgressSaving();
+    
+    // 音乐按钮点击事件
+    musicPlayerBtn.addEventListener('click', toggleMusic);
+    
+    // 音乐结束时保存状态
+    backgroundMusic.addEventListener('ended', () => {
+        updateMusicUI(false);
+        saveMusicState();
+    });
+    
+    // 音乐播放进度变化时保存
+    backgroundMusic.addEventListener('timeupdate', () => {
+        if (!backgroundMusic.paused) {
+            localStorage.setItem('musicTime', backgroundMusic.currentTime);
+        }
     });
 });

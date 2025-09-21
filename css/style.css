@@ -150,9 +150,9 @@ body {
     font-size: 16px;
     transition: all 0.3s;
     box-shadow: 0 0 15px rgba(0, 150, 255, 0.3);
-    display: flex;
-    align-items: center;
     gap: 8px;
+	display: block;
+    text-align: center;
 }
 
 .action-btn:hover {
@@ -308,6 +308,18 @@ body {
     overflow-y: auto;
 }
 
+/* 音乐播放器图标动画 */
+.music-playing {
+    animation: musicPulse 1s infinite;
+    background: rgba(255, 255, 255, 0.25) !important;
+}
+
+@keyframes musicPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(1); }
+}
+
 /* 响应式设计 */
 @media (max-width: 768px) {
     .main-text {
@@ -351,4 +363,3 @@ body {
         font-size: 13px;
     }
 }
-
