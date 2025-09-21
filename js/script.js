@@ -280,3 +280,22 @@ document.body.addEventListener('touchstart', (e) => {
 
 // 创建星星背景
 createStars();
+
+// 文字切换功能
+document.addEventListener('DOMContentLoaded', function() {
+    const mainText = document.getElementById('mainText');
+    const texts = ['遥遥星辰', '沉鱼落雁', '良辰美景', '284999'];
+    let currentIndex = 0;
+    
+    mainText.addEventListener('click', function() {
+        // 切换到下一个文本
+        currentIndex = (currentIndex + 1) % texts.length;
+        mainText.textContent = texts[currentIndex];
+        
+        // 添加一个简单的动画效果
+        mainText.style.transform = 'scale(1.1)';
+        setTimeout(() => {
+            mainText.style.transform = 'scale(1)';
+        }, 200);
+    });
+});
