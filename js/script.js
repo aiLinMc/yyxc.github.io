@@ -135,34 +135,7 @@ function showGlobalMessage(message, isSuccess) {
 // 音乐播放器功能
 const musicPlayerBtn = document.getElementById('musicPlayerBtn');
 const backgroundMusic = document.getElementById('backgroundMusic');
-const musicIcon = document.getElementById('musicIcon');
 const musicText = document.getElementById('musicText');
-
-// 从本地存储加载音乐状态
-function loadMusicState() {
-    const savedState = localStorage.getItem('musicState');
-    const savedTime = localStorage.getItem('musicTime');
-    
-    if (savedState === 'playing') {
-        // 设置时间但不自动播放
-        if (savedTime) {
-            backgroundMusic.currentTime = parseFloat(savedTime);
-        }
-        updateMusicUI(true);
-    } else {
-        updateMusicUI(false);
-    }
-}
-
-// 保存音乐状态到本地存储
-function saveMusicState() {
-    if (backgroundMusic.paused) {
-        localStorage.setItem('musicState', 'paused');
-    } else {
-        localStorage.setItem('musicState', 'playing');
-        localStorage.setItem('musicTime', backgroundMusic.currentTime);
-    }
-}
 
 // 更新音乐UI状态
 function updateMusicUI(isPlaying) {
@@ -181,7 +154,6 @@ function toggleMusic() {
         backgroundMusic.play()
             .then(() => {
                 updateMusicUI(true);
-                saveMusicState();
             })
             .catch(error => {
                 console.error('播放音乐失败:', error);
@@ -190,17 +162,7 @@ function toggleMusic() {
     } else {
         backgroundMusic.pause();
         updateMusicUI(false);
-        saveMusicState();
     }
-}
-
-// 定期保存音乐播放进度
-function setupMusicProgressSaving() {
-    setInterval(() => {
-        if (!backgroundMusic.paused) {
-            localStorage.setItem('musicTime', backgroundMusic.currentTime);
-        }
-    }, 1000); // 每秒保存一次进度
 }
 
 // 模态窗口功能
@@ -355,7 +317,7 @@ createStars();
 // 文字切换功能
 document.addEventListener('DOMContentLoaded', function() {
     const mainText = document.getElementById('mainText');
-    const texts = ['遥遥星辰', '284999', '广告位招租'];
+    const texts = ['遥遥星辰', '284999', '锅盖~'];
     let currentIndex = 0;
     
     mainText.addEventListener('click', function() {
@@ -370,23 +332,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 200);
     });
     
-    // 初始化音乐播放器
-    loadMusicState();
-    setupMusicProgressSaving();
+    // 初始化音乐播放器状态为暂停
+    updateMusicUI(false);
     
     // 音乐按钮点击事件
     musicPlayerBtn.addEventListener('click', toggleMusic);
     
-    // 音乐结束时保存状态
+    // 音乐结束时更新UI状态
     backgroundMusic.addEventListener('ended', () => {
         updateMusicUI(false);
-        saveMusicState();
-    });
-    
-    // 音乐播放进度变化时保存
-    backgroundMusic.addEventListener('timeupdate', () => {
-        if (!backgroundMusic.paused) {
-            localStorage.setItem('musicTime', backgroundMusic.currentTime);
-        }
     });
 });
